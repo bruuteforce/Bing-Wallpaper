@@ -194,7 +194,8 @@ fun DailyWallpaperScreen(
                                     Text(
                                         text = dailyWallpaper.startdate,
                                         style = MaterialTheme.typography.labelMedium,
-                                        fontWeight = FontWeight.SemiBold
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                             }
