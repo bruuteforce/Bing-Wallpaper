@@ -23,7 +23,7 @@ class BingWallpaperApplication : Application(), ImageLoaderFactory {
                     .maxSizeBytes(100 * 1024 * 1024) // 100 MB disk cache for offline persistence and smooth scrolling
                     .build()
             }
-            .crossfade(true)
+            .crossfade(enable = true)
             .respectCacheHeaders(false)
             .apply {
                 if (isDebug) {

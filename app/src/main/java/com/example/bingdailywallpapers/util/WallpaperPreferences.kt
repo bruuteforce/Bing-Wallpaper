@@ -87,13 +87,12 @@ object WallpaperPreferences {
         val existingIndex = favorites.indexOfFirst {
             (it.fullImageUrl.ifEmpty { it.urlbase ?: it.url ?: it.hsh }) == targetId
         }
-        val isFav: Boolean
-        if (existingIndex >= 0) {
+        val isFav = if (existingIndex >= 0) {
             favorites.removeAt(existingIndex)
-            isFav = false
+            false
         } else {
             favorites.add(0, image)
-            isFav = true
+            true
         }
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val json = adapter.toJson(favorites)
