@@ -16,10 +16,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.CloudDownload
 import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.material3.Button
@@ -45,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.bingdailywallpapers.data.model.BingImage
+import com.example.bingdailywallpapers.data.model.isFavoritedIn
 import com.example.bingdailywallpapers.ui.theme.BingDailyWallpapersTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +54,8 @@ fun DailyWallpaperScreen(
     dailyWallpaper: BingImage?,
     isLoading: Boolean,
     errorMessage: String?,
-    isFavorite: Boolean,
+    favoriteWallpapers: List<BingImage> = emptyList(),
+    isFavorite: Boolean = dailyWallpaper?.isFavoritedIn(favoriteWallpapers) == true,
     onRefresh: () -> Unit,
     onSetWallpaperClick: (BingImage) -> Unit,
     onDownloadClick: (BingImage) -> Unit,
@@ -230,14 +232,15 @@ fun DailyWallpaperScreen(
                                 color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
                                 tonalElevation = 4.dp
                             ) {
+                                val isFav = isFavorite || (dailyWallpaper != null && dailyWallpaper.isFavoritedIn(favoriteWallpapers))
                                 IconButton(
                                     onClick = { onToggleFavorite(dailyWallpaper) },
                                     modifier = Modifier.padding(2.dp)
                                 ) {
                                     Icon(
-                                        imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                                        imageVector = if (isFav) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                                         contentDescription = "Favorite",
-                                        tint = if (isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                                        tint = if (isFav) Color(0xFFE11D48) else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }

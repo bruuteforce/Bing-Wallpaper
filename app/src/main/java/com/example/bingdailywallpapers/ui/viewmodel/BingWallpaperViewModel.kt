@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bingdailywallpapers.data.model.BingImage
+import com.example.bingdailywallpapers.data.model.isFavoritedIn
 import com.example.bingdailywallpapers.data.repository.BingWallpaperRepository
 import com.example.bingdailywallpapers.util.WallpaperHelper
 import com.example.bingdailywallpapers.util.WallpaperPreferences
@@ -33,6 +34,9 @@ class BingWallpaperViewModel(
 
     private val initialFallback = getFallbackWallpapers()
 
+    private val _favoriteWallpapers = MutableStateFlow<List<BingImage>>(emptyList())
+    val favoriteWallpapers: StateFlow<List<BingImage>> = _favoriteWallpapers.asStateFlow()
+
     private val _uiState = MutableStateFlow(
         BingUiState(
             dailyWallpaper = initialFallback.firstOrNull(),
@@ -51,6 +55,7 @@ class BingWallpaperViewModel(
 
     fun loadFavorites(context: Context) {
         val favorites = WallpaperPreferences.getFavoriteWallpapers(context)
+        _favoriteWallpapers.value = favorites
         _uiState.update { it.copy(favoriteWallpapers = favorites) }
     }
 
@@ -60,7 +65,15 @@ class BingWallpaperViewModel(
         return isFav
     }
 
+    fun isFavorite(image: BingImage): Boolean {
+        return image.isFavoritedIn(_favoriteWallpapers.value)
+    }
+
     fun isFavorite(context: Context, image: BingImage): Boolean {
+        val inState = isFavorite(image)
+        if (inState || _favoriteWallpapers.value.isNotEmpty()) {
+            return inState
+        }
         return WallpaperPreferences.isFavorite(context, image)
     }
 

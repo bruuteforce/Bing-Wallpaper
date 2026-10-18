@@ -1,6 +1,4 @@
 package com.example.bingdailywallpapers.ui.screens
-
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +16,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -34,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -42,12 +41,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.bingdailywallpapers.data.model.BingImage
+import com.example.bingdailywallpapers.data.model.isFavoritedIn
 import com.example.bingdailywallpapers.ui.theme.BingDailyWallpapersTheme
-import com.example.bingdailywallpapers.util.WallpaperPreferences
 
 @Composable
 fun GalleryScreen(
     wallpapers: List<BingImage>,
+    favoriteWallpapers: List<BingImage> = emptyList(),
     isLoading: Boolean,
     errorMessage: String?,
     onRefresh: () -> Unit,
@@ -55,8 +55,6 @@ fun GalleryScreen(
     onToggleFavorite: (BingImage) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-
     Surface(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         color = MaterialTheme.colorScheme.background
@@ -146,7 +144,7 @@ fun GalleryScreen(
                         items = wallpapers,
                         key = { image -> image.hsh ?: image.url ?: image.startdate ?: image.title ?: image.hashCode() }
                     ) { image ->
-                        val isFav = WallpaperPreferences.isFavorite(context, image)
+                        val isFav = image.isFavoritedIn(favoriteWallpapers)
                         GalleryItemCard(
                             image = image,
                             isFavorite = isFav,
@@ -220,9 +218,9 @@ fun GalleryItemCard(
                     modifier = Modifier.padding(2.dp)
                 ) {
                     Icon(
-                        imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorite",
-                        tint = if (isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = if (isFavorite) Color(0xFFE11D48) else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

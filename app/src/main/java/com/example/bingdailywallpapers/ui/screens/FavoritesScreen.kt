@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.bingdailywallpapers.data.model.BingImage
+import com.example.bingdailywallpapers.data.model.isFavoritedIn
 import com.example.bingdailywallpapers.ui.theme.BingDailyWallpapersTheme
 
 @Composable
@@ -70,10 +72,10 @@ fun FavoritesScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            imageVector = Icons.Rounded.Favorite,
+                            imageVector = Icons.Filled.Favorite,
                             contentDescription = null,
                             modifier = Modifier.padding(bottom = 12.dp),
-                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                            tint = Color(0xFFE11D48).copy(alpha = 0.5f)
                         )
                         Text(
                             text = "No favorite wallpapers yet",
@@ -100,8 +102,10 @@ fun FavoritesScreen(
                         items = favoriteWallpapers,
                         key = { image -> image.hsh ?: image.url ?: image.startdate ?: image.title ?: image.hashCode() }
                     ) { image ->
+                        val isFav = image.isFavoritedIn(favoriteWallpapers)
                         FavoriteItemCard(
                             image = image,
+                            isFavorite = isFav,
                             onClick = { onWallpaperClick(image) },
                             onToggleFavorite = { onToggleFavorite(image) }
                         )
@@ -115,6 +119,7 @@ fun FavoritesScreen(
 @Composable
 fun FavoriteItemCard(
     image: BingImage,
+    isFavorite: Boolean = true,
     onClick: () -> Unit,
     onToggleFavorite: () -> Unit
 ) {
@@ -170,9 +175,9 @@ fun FavoriteItemCard(
                     modifier = Modifier.padding(2.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Favorite,
-                        contentDescription = "Remove Favorite",
-                        tint = MaterialTheme.colorScheme.error
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = if (isFavorite) Color(0xFFE11D48) else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

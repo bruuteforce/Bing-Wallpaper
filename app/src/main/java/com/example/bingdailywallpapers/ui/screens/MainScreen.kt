@@ -192,7 +192,7 @@ fun MainScreen(
                     modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
                 )
             } else if (detail != null) {
-                val isFav = viewModel.isFavorite(context, detail)
+                val isFav = viewModel.isFavorite(detail)
                 WallpaperDetailScreen(
                     imageUrl = detail.fullImageUrl,
                     title = detail.title,
@@ -228,11 +228,12 @@ fun MainScreen(
             } else {
                 when (currentTab) {
                     0 -> {
-                        val dailyFav = uiState.dailyWallpaper?.let { viewModel.isFavorite(context, it) } ?: false
+                        val dailyFav = uiState.dailyWallpaper?.let { viewModel.isFavorite(it) } ?: false
                         DailyWallpaperScreen(
                             dailyWallpaper = uiState.dailyWallpaper,
                             isLoading = uiState.isLoading,
                             errorMessage = uiState.errorMessage,
+                            favoriteWallpapers = uiState.favoriteWallpapers,
                             isFavorite = dailyFav,
                             onRefresh = { viewModel.fetchWallpapers(isRefresh = true) },
                             onSetWallpaperClick = { image ->
@@ -266,6 +267,7 @@ fun MainScreen(
                     }
                     1 -> GalleryScreen(
                         wallpapers = uiState.galleryWallpapers,
+                        favoriteWallpapers = uiState.favoriteWallpapers,
                         isLoading = uiState.isLoading,
                         errorMessage = uiState.errorMessage,
                         onRefresh = { viewModel.fetchWallpapers(isRefresh = true) },

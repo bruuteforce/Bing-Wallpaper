@@ -30,6 +30,15 @@ data class BingImage(
         get() = if (url?.startsWith("http") == true) url else "https://www.bing.com${url ?: ""}"
 }
 
+fun BingImage.isFavoritedIn(favorites: List<BingImage>): Boolean {
+    val targetId = fullImageUrl.ifEmpty { urlbase ?: url ?: hsh ?: "" }
+    if (targetId.isEmpty()) return false
+    return favorites.any { fav ->
+        val favId = fav.fullImageUrl.ifEmpty { fav.urlbase ?: fav.url ?: fav.hsh ?: "" }
+        favId == targetId
+    }
+}
+
 @Serializable
 @JsonClass(generateAdapter = true)
 data class Tooltips(
