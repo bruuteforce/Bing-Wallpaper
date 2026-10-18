@@ -1,6 +1,7 @@
 package com.example.bingdailywallpapers.ui.screens
 
 import android.widget.Toast
+import com.example.bingdailywallpapers.BuildConfig
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -461,40 +462,42 @@ fun AppSettingsDialog(
                     }
                 }
 
-                HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
+                if (BuildConfig.DEBUG) {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
 
-                // Test Daily Notification & Sync Section
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = "Testing & Diagnostics",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = "Instantly trigger daily wallpaper sync and test notification delivery.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Button(
-                        onClick = {
-                            DailyWallpaperWorker.triggerTest(context)
-                            Toast.makeText(
-                                context,
-                                "Test daily wallpaper sync & notification triggered!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Wallpaper,
-                            contentDescription = null,
-                            modifier = Modifier.padding(end = 8.dp)
+                    // Test Daily Notification & Sync Section
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "Testing & Diagnostics",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
-                        Text("Test Daily Notification & Sync", fontWeight = FontWeight.Bold)
+                        Text(
+                            text = "Instantly trigger daily wallpaper sync and test notification delivery.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Button(
+                            onClick = {
+                                DailyWallpaperWorker.triggerTest(context)
+                                Toast.makeText(
+                                    context,
+                                    "Test daily wallpaper sync & notification triggered!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Wallpaper,
+                                contentDescription = null,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text("Test Daily Notification & Sync", fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
             }
