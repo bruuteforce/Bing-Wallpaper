@@ -19,13 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import android.annotation.SuppressLint
 import com.example.bingdailywallpapers.ui.screens.MainScreen
 import com.example.bingdailywallpapers.ui.theme.BingDailyWallpapersTheme
 import com.example.bingdailywallpapers.util.WallpaperPreferences
 import com.example.bingdailywallpapers.worker.DailyWallpaperWorker
 
-@SuppressLint("InvalidFragmentVersionForActivityResult")
 class MainActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()

@@ -34,7 +34,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,7 +60,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun CropWallpaperScreen(
     imageUrl: String,
@@ -116,11 +114,8 @@ fun CropWallpaperScreen(
     var containerWidth by remember { mutableFloatStateOf(0f) }
     var containerHeight by remember { mutableFloatStateOf(0f) }
 
-    // Get device screen aspect ratio
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.toFloat()
-    val screenHeight = configuration.screenHeightDp.toFloat()
-    val deviceAspectRatio = if (screenHeight > 0) screenWidth / screenHeight else (9f / 19.5f)
+    // Device screen aspect ratio (standard smartphone portrait ratio 9:19.5)
+    val deviceAspectRatio = 9f / 19.5f
 
     val performCropAndApply: (Int) -> Unit = { wallpaperFlag ->
         val bmp = bitmap
