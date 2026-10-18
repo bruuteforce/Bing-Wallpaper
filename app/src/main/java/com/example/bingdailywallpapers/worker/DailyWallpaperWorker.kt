@@ -1,6 +1,5 @@
 package com.example.bingdailywallpapers.worker
 
-import android.R
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -89,7 +88,7 @@ class DailyWallpaperWorker(
             )
 
             val notification = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_menu_gallery)
+                .setSmallIcon(android.R.drawable.ic_menu_gallery)
                 .setContentTitle("New Bing Wallpaper Set!")
                 .setContentText(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText("Successfully applied daily wallpaper: $title"))

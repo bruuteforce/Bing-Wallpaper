@@ -1,6 +1,7 @@
 package com.example.bingdailywallpapers.util
 
 import android.content.Context
+import androidx.core.content.edit
 import com.example.bingdailywallpapers.data.model.BingImage
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -29,7 +30,7 @@ object WallpaperPreferences {
 
     fun setAutoWallpaperEnabled(context: Context, enabled: Boolean) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putBoolean(KEY_AUTO_WALLPAPER, enabled).apply()
+        prefs.edit { putBoolean(KEY_AUTO_WALLPAPER, enabled) }
     }
 
     fun getLastSyncTimestamp(context: Context): Long {
@@ -39,7 +40,7 @@ object WallpaperPreferences {
 
     fun setLastSyncTimestamp(context: Context, timestamp: Long) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, timestamp).apply()
+        prefs.edit { putLong(KEY_LAST_SYNC_TIMESTAMP, timestamp) }
     }
 
     fun getThemeMode(context: Context): String {
@@ -49,7 +50,7 @@ object WallpaperPreferences {
 
     fun setThemeMode(context: Context, mode: String) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(KEY_THEME_MODE, mode).apply()
+        prefs.edit { putString(KEY_THEME_MODE, mode) }
     }
 
     fun getBingMarket(context: Context): String {
@@ -59,7 +60,7 @@ object WallpaperPreferences {
 
     fun setBingMarket(context: Context, market: String) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(KEY_BING_MARKET, market).apply()
+        prefs.edit { putString(KEY_BING_MARKET, market) }
     }
 
     fun getFavoriteWallpapers(context: Context): List<BingImage> {
@@ -96,7 +97,7 @@ object WallpaperPreferences {
         }
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val json = adapter.toJson(favorites)
-        prefs.edit().putString(KEY_FAVORITES, json).apply()
+        prefs.edit { putString(KEY_FAVORITES, json) }
         return isFav
     }
 }

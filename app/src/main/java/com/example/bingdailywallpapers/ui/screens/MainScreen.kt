@@ -47,6 +47,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -78,7 +80,7 @@ fun MainScreen(
         viewModel.loadFavorites(context)
     }
 
-    var currentTab by remember { mutableStateOf(0) }
+    var currentTab by remember { mutableIntStateOf(0) }
     var selectedDetailWallpaper by remember { mutableStateOf<BingImage?>(null) }
     var selectedCropWallpaper by remember { mutableStateOf<BingImage?>(null) }
     var settingWallpaperImage by remember { mutableStateOf<BingImage?>(null) }
@@ -334,7 +336,7 @@ fun AppSettingsDialog(
         mutableStateOf(WallpaperPreferences.getBingMarket(context))
     }
     var currentTime by remember {
-        mutableStateOf(System.currentTimeMillis())
+        mutableLongStateOf(System.currentTimeMillis())
     }
 
     LaunchedEffect(autoWallpaperEnabled) {

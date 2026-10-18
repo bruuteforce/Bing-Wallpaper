@@ -75,25 +75,13 @@ object WallpaperHelper {
             val wallpaperManager = WallpaperManager.getInstance(context)
             when (target) {
                 WallpaperTarget.HOME_SCREEN -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM)
-                    } else {
-                        wallpaperManager.setBitmap(bitmap)
-                    }
+                    wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM)
                 }
                 WallpaperTarget.LOCK_SCREEN -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
-                    } else {
-                        wallpaperManager.setBitmap(bitmap)
-                    }
+                    wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
                 }
                 WallpaperTarget.BOTH -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM or WallpaperManager.FLAG_LOCK)
-                    } else {
-                        wallpaperManager.setBitmap(bitmap)
-                    }
+                    wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM or WallpaperManager.FLAG_LOCK)
                 }
             }
             Result.success(Unit)
@@ -112,11 +100,7 @@ object WallpaperHelper {
     ): Result<Unit> {
         return try {
             val wallpaperManager = WallpaperManager.getInstance(context)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                wallpaperManager.setBitmap(bitmap, null, true, wallpaperFlag)
-            } else {
-                wallpaperManager.setBitmap(bitmap)
-            }
+            wallpaperManager.setBitmap(bitmap, null, true, wallpaperFlag)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

@@ -34,9 +34,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,6 +61,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun CropWallpaperScreen(
     imageUrl: String,
@@ -106,12 +109,12 @@ fun CropWallpaperScreen(
     }
 
     // Pan and zoom states
-    var scale by remember { mutableStateOf(1f) }
+    var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
 
     // Container width and height captured from BoxWithConstraints
-    var containerWidth by remember { mutableStateOf(0f) }
-    var containerHeight by remember { mutableStateOf(0f) }
+    var containerWidth by remember { mutableFloatStateOf(0f) }
+    var containerHeight by remember { mutableFloatStateOf(0f) }
 
     // Get device screen aspect ratio
     val configuration = LocalConfiguration.current

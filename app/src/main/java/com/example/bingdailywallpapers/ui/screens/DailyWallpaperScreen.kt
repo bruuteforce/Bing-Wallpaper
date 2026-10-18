@@ -53,15 +53,15 @@ fun DailyWallpaperScreen(
     dailyWallpaper: BingImage?,
     isLoading: Boolean,
     errorMessage: String?,
-    favoriteWallpapers: List<BingImage> = emptyList(),
-    isFavorite: Boolean = dailyWallpaper?.isFavoritedIn(favoriteWallpapers) == true,
     onRefresh: () -> Unit,
     onSetWallpaperClick: (BingImage) -> Unit,
     onDownloadClick: (BingImage) -> Unit,
     onDetailClick: (BingImage) -> Unit,
     onToggleFavorite: (BingImage) -> Unit,
     onShareClick: (BingImage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    favoriteWallpapers: List<BingImage> = emptyList(),
+    isFavorite: Boolean = dailyWallpaper?.isFavoritedIn(favoriteWallpapers) == true
 ) {
     val scrollState = rememberScrollState()
 

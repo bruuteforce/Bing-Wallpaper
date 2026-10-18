@@ -51,15 +51,15 @@ fun WallpaperDetailScreen(
     title: String?,
     copyright: String?,
     date: String?,
-    favoriteWallpapers: List<BingImage> = emptyList(),
-    isFavorite: Boolean = false,
-    image: BingImage? = null,
     onBackClick: () -> Unit,
     onSetWallpaperClick: () -> Unit,
     onDownloadClick: () -> Unit,
     onToggleFavorite: () -> Unit,
     onShareClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    favoriteWallpapers: List<BingImage> = emptyList(),
+    isFavorite: Boolean = false,
+    image: BingImage? = null
 ) {
     val actualIsFavorite = image?.isFavoritedIn(favoriteWallpapers) ?: isFavorite
 

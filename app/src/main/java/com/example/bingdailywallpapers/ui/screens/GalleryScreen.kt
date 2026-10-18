@@ -46,13 +46,13 @@ import com.example.bingdailywallpapers.ui.theme.BingDailyWallpapersTheme
 @Composable
 fun GalleryScreen(
     wallpapers: List<BingImage>,
-    favoriteWallpapers: List<BingImage> = emptyList(),
     isLoading: Boolean,
     errorMessage: String?,
     onRefresh: () -> Unit,
     onWallpaperClick: (BingImage) -> Unit,
     onToggleFavorite: (BingImage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    favoriteWallpapers: List<BingImage> = emptyList()
 ) {
     Surface(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
