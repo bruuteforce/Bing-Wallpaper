@@ -40,6 +40,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.bingdailywallpapers.data.model.BingImage
+import com.example.bingdailywallpapers.data.model.isFavoritedIn
 import com.example.bingdailywallpapers.ui.theme.BingDailyWallpapersTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +51,9 @@ fun WallpaperDetailScreen(
     title: String?,
     copyright: String?,
     date: String?,
-    isFavorite: Boolean,
+    favoriteWallpapers: List<BingImage> = emptyList(),
+    isFavorite: Boolean = false,
+    image: BingImage? = null,
     onBackClick: () -> Unit,
     onSetWallpaperClick: () -> Unit,
     onDownloadClick: () -> Unit,
@@ -57,6 +61,8 @@ fun WallpaperDetailScreen(
     onShareClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val actualIsFavorite = image?.isFavoritedIn(favoriteWallpapers) ?: isFavorite
+
     Scaffold(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         topBar = {
@@ -80,9 +86,9 @@ fun WallpaperDetailScreen(
                     }
                     IconButton(onClick = onToggleFavorite) {
                         Icon(
-                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            imageVector = if (actualIsFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                             contentDescription = "Favorite",
-                            tint = if (isFavorite) Color(0xFFE11D48) else MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = if (actualIsFavorite) Color(0xFFE11D48) else MaterialTheme.colorScheme.onSurface
                         )
                     }
                 },

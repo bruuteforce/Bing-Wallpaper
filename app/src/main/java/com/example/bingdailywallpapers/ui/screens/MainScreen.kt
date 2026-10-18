@@ -192,13 +192,13 @@ fun MainScreen(
                     modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
                 )
             } else if (detail != null) {
-                val isFav = viewModel.isFavorite(detail)
                 WallpaperDetailScreen(
+                    image = detail,
                     imageUrl = detail.fullImageUrl,
                     title = detail.title,
                     copyright = detail.copyright,
                     date = detail.startdate,
-                    isFavorite = isFav,
+                    favoriteWallpapers = uiState.favoriteWallpapers,
                     onBackClick = { selectedWallpaper = null },
                     onSetWallpaperClick = {
                         settingWallpaperImage = detail
