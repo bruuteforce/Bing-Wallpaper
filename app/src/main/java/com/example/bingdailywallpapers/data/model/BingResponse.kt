@@ -28,6 +28,22 @@ data class BingImage(
 ) {
     val fullImageUrl: String
         get() = if (url?.startsWith("http") == true) url else "https://www.bing.com${url ?: ""}"
+
+    val portraitUrl: String
+        get() {
+            val standard = fullImageUrl
+            if (standard.isEmpty()) return standard
+            var result = standard
+            val resolutionRegex = Regex("""_\d+x\d+\.jpg""", RegexOption.IGNORE_CASE)
+            if (resolutionRegex.containsMatchIn(result)) {
+                result = resolutionRegex.replace(result, "_1080x1920.jpg")
+            } else if (result.contains("_UHD.jpg", ignoreCase = true)) {
+                result = result.replace(Regex("""_UHD\.jpg""", RegexOption.IGNORE_CASE), "_1080x1920.jpg")
+            } else if (result.contains("w=1920", ignoreCase = true)) {
+                result = result.replace("w=1920", "w=1080")
+            }
+            return if (result.isNotEmpty()) result else standard
+        }
 }
 
 fun BingImage.isFavoritedIn(favorites: List<BingImage>): Boolean {

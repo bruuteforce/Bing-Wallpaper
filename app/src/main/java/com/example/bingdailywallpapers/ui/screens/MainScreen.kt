@@ -97,7 +97,7 @@ fun MainScreen(
             },
             onApplyDirectly = { target ->
                 settingWallpaperImage = null
-                viewModel.setWallpaper(context, activeSettingImage.fullImageUrl, target) { success, msg ->
+                viewModel.setWallpaper(context, activeSettingImage.portraitUrl, target) { success, msg ->
                     Toast.makeText(
                         context,
                         if (success) "Wallpaper applied successfully!" else (msg ?: "Failed to set wallpaper"),
@@ -585,7 +585,7 @@ fun SetWallpaperChoiceDialog(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp)
                 ) {
-                    Text("Apply Directly (Both Screen & Lock)")
+                    Text("Apply Directly (Full Image)")
                 }
                 OutlinedButton(
                     onClick = { onApplyDirectly(WallpaperHelper.WallpaperTarget.HOME_SCREEN) },
