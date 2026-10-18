@@ -79,13 +79,19 @@ fun MainScreen(
 
     var currentTab by remember { mutableStateOf(0) }
     var selectedDetailWallpaper by remember { mutableStateOf<BingImage?>(null) }
-    var croppingWallpaper by remember { mutableStateOf<BingImage?>(null) }
+    var selectedCropWallpaper by remember { mutableStateOf<BingImage?>(null) }
     var settingWallpaperImage by remember { mutableStateOf<BingImage?>(null) }
     var showSettingsDialog by remember { mutableStateOf(false) }
 
     if (selectedDetailWallpaper != null) {
         BackHandler {
             selectedDetailWallpaper = null
+        }
+    }
+
+    if (selectedCropWallpaper != null) {
+        BackHandler {
+            selectedCropWallpaper = null
         }
     }
 
@@ -96,7 +102,7 @@ fun MainScreen(
             onDismiss = { settingWallpaperImage = null },
             onCropAndApply = {
                 settingWallpaperImage = null
-                croppingWallpaper = activeSettingImage
+                selectedCropWallpaper = activeSettingImage
             },
             onApplyDirectly = { target ->
                 settingWallpaperImage = null
@@ -123,7 +129,7 @@ fun MainScreen(
     Scaffold(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         topBar = {
-            if (selectedDetailWallpaper == null && croppingWallpaper == null) {
+            if (selectedDetailWallpaper == null && selectedCropWallpaper == null) {
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
@@ -150,7 +156,7 @@ fun MainScreen(
             }
         },
         bottomBar = {
-            if (selectedDetailWallpaper == null && croppingWallpaper == null) {
+            if (selectedDetailWallpaper == null && selectedCropWallpaper == null) {
                 NavigationBar {
                     NavigationBarItem(
                         selected = currentTab == 0,
@@ -180,14 +186,14 @@ fun MainScreen(
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            val cropTarget = croppingWallpaper
+            val cropTarget = selectedCropWallpaper
             val detail = selectedDetailWallpaper
 
             if (cropTarget != null) {
                 CropWallpaperScreen(
                     imageUrl = cropTarget.fullImageUrl,
                     title = cropTarget.title,
-                    onBackClick = { croppingWallpaper = null },
+                    onBackClick = { selectedCropWallpaper = null },
                     onApplyWallpaper = { croppedBitmap, wallpaperFlag ->
                         viewModel.applyCroppedWallpaper(context, croppedBitmap, wallpaperFlag) { success, msg ->
                             Toast.makeText(
@@ -196,7 +202,7 @@ fun MainScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
                             if (success) {
-                                croppingWallpaper = null
+                                selectedCropWallpaper = null
                             }
                         }
                     },

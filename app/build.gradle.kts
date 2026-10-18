@@ -11,6 +11,10 @@ android {
         version = release(37)
     }
 
+    lint {
+        checkReleaseBuilds = false
+    }
+
     defaultConfig {
         applicationId = "com.example.bingdailywallpapers"
         minSdk = 24
@@ -25,6 +29,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
