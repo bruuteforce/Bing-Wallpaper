@@ -36,6 +36,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -43,6 +44,19 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+}
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        val apkName = when (variant.name) {
+            "release" -> "BingDailyWallpapers-Release.apk"
+            "debug" -> "BingDailyWallpapers-Debug.apk"
+            else -> "BingDailyWallpapers-${variant.name}.apk"
+        }
+        variant.outputs.forEach { output ->
+            output.outputFileName.set(apkName)
+        }
     }
 }
 
