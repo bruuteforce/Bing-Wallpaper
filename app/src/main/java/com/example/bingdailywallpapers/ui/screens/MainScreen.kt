@@ -1,6 +1,7 @@
 package com.example.bingdailywallpapers.ui.screens
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -74,10 +75,16 @@ fun MainScreen(
     }
 
     var currentTab by remember { mutableStateOf(0) }
-    var selectedWallpaper by remember { mutableStateOf<BingImage?>(null) }
+    var selectedDetailWallpaper by remember { mutableStateOf<BingImage?>(null) }
     var croppingWallpaper by remember { mutableStateOf<BingImage?>(null) }
     var settingWallpaperImage by remember { mutableStateOf<BingImage?>(null) }
     var showSettingsDialog by remember { mutableStateOf(false) }
+
+    if (selectedDetailWallpaper != null) {
+        BackHandler {
+            selectedDetailWallpaper = null
+        }
+    }
 
     val activeSettingImage = settingWallpaperImage
     if (activeSettingImage != null) {
@@ -113,7 +120,7 @@ fun MainScreen(
     Scaffold(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         topBar = {
-            if (selectedWallpaper == null && croppingWallpaper == null) {
+            if (selectedDetailWallpaper == null && croppingWallpaper == null) {
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
@@ -140,7 +147,7 @@ fun MainScreen(
             }
         },
         bottomBar = {
-            if (selectedWallpaper == null && croppingWallpaper == null) {
+            if (selectedDetailWallpaper == null && croppingWallpaper == null) {
                 NavigationBar {
                     NavigationBarItem(
                         selected = currentTab == 0,
@@ -171,7 +178,7 @@ fun MainScreen(
                 .background(MaterialTheme.colorScheme.background)
         ) {
             val cropTarget = croppingWallpaper
-            val detail = selectedWallpaper
+            val detail = selectedDetailWallpaper
 
             if (cropTarget != null) {
                 CropWallpaperScreen(
@@ -200,7 +207,7 @@ fun MainScreen(
                     copyright = detail.copyright,
                     date = detail.startdate,
                     favoriteWallpapers = uiState.favoriteWallpapers,
-                    onBackClick = { selectedWallpaper = null },
+                    onBackClick = { selectedDetailWallpaper = null },
                     onSetWallpaperClick = {
                         settingWallpaperImage = detail
                     },
@@ -250,7 +257,7 @@ fun MainScreen(
                                 }
                             },
                             onDetailClick = { image ->
-                                selectedWallpaper = image
+                                selectedDetailWallpaper = image
                             },
                             onToggleFavorite = { image ->
                                 val added = viewModel.toggleFavorite(context, image)
@@ -273,7 +280,7 @@ fun MainScreen(
                         errorMessage = uiState.errorMessage,
                         onRefresh = { viewModel.fetchWallpapers(isRefresh = true) },
                         onWallpaperClick = { image ->
-                            selectedWallpaper = image
+                            selectedDetailWallpaper = image
                         },
                         onToggleFavorite = { image ->
                             val added = viewModel.toggleFavorite(context, image)
@@ -288,7 +295,7 @@ fun MainScreen(
                     2 -> FavoritesScreen(
                         favoriteWallpapers = uiState.favoriteWallpapers,
                         onWallpaperClick = { image ->
-                            selectedWallpaper = image
+                            selectedDetailWallpaper = image
                         },
                         onToggleFavorite = { image ->
                             viewModel.toggleFavorite(context, image)
