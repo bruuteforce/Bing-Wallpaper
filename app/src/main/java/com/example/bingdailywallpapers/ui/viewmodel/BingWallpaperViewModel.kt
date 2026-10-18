@@ -1,8 +1,9 @@
 package com.example.bingdailywallpapers.ui.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bingdailywallpapers.data.model.BingImage
 import com.example.bingdailywallpapers.data.model.isFavoritedIn
@@ -29,8 +30,9 @@ data class BingUiState(
 )
 
 class BingWallpaperViewModel(
+    application: Application,
     private val repository: BingWallpaperRepository = BingWallpaperRepository()
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val initialFallback = getFallbackWallpapers()
 
@@ -87,6 +89,9 @@ class BingWallpaperViewModel(
     }
 
     fun fetchWallpapers(isRefresh: Boolean = false) {
+        val context = getApplication<Application>()
+        val market = WallpaperPreferences.getBingMarket(context)
+
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             if (throwable is CancellationException) return@CoroutineExceptionHandler
             _uiState.update {
@@ -105,7 +110,7 @@ class BingWallpaperViewModel(
                 _uiState.update { it.copy(isLoading = false, errorMessage = null) }
             }
 
-            val result = repository.fetchWallpapers(idx = 0, n = 20)
+            val result = repository.fetchWallpapers(idx = 0, n = 20, mkt = market)
             result.fold(
                 onSuccess = { images ->
                     if (images.isNotEmpty()) {
@@ -143,6 +148,12 @@ class BingWallpaperViewModel(
                 }
             )
         }
+    }
+
+    fun setMarketAndFetch(market: String) {
+        val context = getApplication<Application>()
+        WallpaperPreferences.setBingMarket(context, market)
+        fetchWallpapers(isRefresh = true)
     }
 
     private fun getFallbackWallpapers(): List<BingImage> {

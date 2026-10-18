@@ -10,7 +10,7 @@ interface BingApiService {
         @Query("format") format: String = "js",
         @Query("idx") idx: Int = 0,
         @Query("n") n: Int = 20,
-        @Query("mkt") mkt: String = "en-US"
+        @Query("mkt") mkt: String = "en-IN"
     ): BingResponse
 
     companion object {

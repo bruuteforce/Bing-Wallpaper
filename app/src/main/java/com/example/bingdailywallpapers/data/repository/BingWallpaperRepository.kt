@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 class BingWallpaperRepository(
     private val apiService: BingApiService = BingApiClient.apiService
 ) {
-    suspend fun fetchWallpapers(idx: Int = 0, n: Int = 20, mkt: String = "en-US"): Result<List<BingImage>> {
+    suspend fun fetchWallpapers(idx: Int = 0, n: Int = 20, mkt: String = "en-IN"): Result<List<BingImage>> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = apiService.getWallpapers(idx = idx, n = n, mkt = mkt)

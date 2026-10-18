@@ -36,7 +36,8 @@ class DailyWallpaperWorker(
                 }
 
                 val repository = BingWallpaperRepository()
-                val result = repository.fetchWallpapers(idx = 0, n = 1)
+                val market = WallpaperPreferences.getBingMarket(applicationContext)
+                val result = repository.fetchWallpapers(idx = 0, n = 1, mkt = market)
                 val images = result.getOrNull()
                 val latestImage = images?.firstOrNull()
 

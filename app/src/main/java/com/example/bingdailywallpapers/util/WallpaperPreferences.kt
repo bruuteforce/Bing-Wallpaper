@@ -12,6 +12,7 @@ object WallpaperPreferences {
     private const val KEY_FAVORITES = "favorite_wallpapers_json"
     private const val KEY_DARK_MODE = "is_dark_mode"
     private const val KEY_THEME_MODE = "theme_mode" // "system", "dark", "light"
+    private const val KEY_BING_MARKET = "bing_market" // "en-IN", "en-US", "en-GB", "en-WW"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -38,6 +39,16 @@ object WallpaperPreferences {
     fun setThemeMode(context: Context, mode: String) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit().putString(KEY_THEME_MODE, mode).apply()
+    }
+
+    fun getBingMarket(context: Context): String {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(KEY_BING_MARKET, "en-IN") ?: "en-IN"
+    }
+
+    fun setBingMarket(context: Context, market: String) {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putString(KEY_BING_MARKET, market).apply()
     }
 
     fun getFavoriteWallpapers(context: Context): List<BingImage> {

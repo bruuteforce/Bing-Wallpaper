@@ -105,7 +105,8 @@ fun MainScreen(
         AppSettingsDialog(
             themeMode = themeMode,
             onThemeModeChanged = onThemeModeChanged,
-            onDismiss = { showSettingsDialog = false }
+            onDismiss = { showSettingsDialog = false },
+            viewModel = viewModel
         )
     }
 
@@ -305,11 +306,15 @@ fun MainScreen(
 fun AppSettingsDialog(
     themeMode: String,
     onThemeModeChanged: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    viewModel: BingWallpaperViewModel = viewModel()
 ) {
     val context = LocalContext.current
     var autoWallpaperEnabled by remember {
         mutableStateOf(WallpaperPreferences.isAutoWallpaperEnabled(context))
+    }
+    var selectedMarket by remember {
+        mutableStateOf(WallpaperPreferences.getBingMarket(context))
     }
 
     AlertDialog(
@@ -322,7 +327,7 @@ fun AppSettingsDialog(
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(end = 8.dp)
                 )
-                Text("App Settings & Theme", fontWeight = FontWeight.Bold)
+                Text("App Settings", fontWeight = FontWeight.Bold)
             }
         },
         text = {
@@ -332,6 +337,48 @@ fun AppSettingsDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // Bing Region & Timezone Selection
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "Bing Region & Timezone",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = "Choose preferred region for tailored wallpapers and timezone.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    val markets = listOf(
+                        Triple("en-IN", "India", "Indian timezone & culture"),
+                        Triple("en-US", "United States", "US daily wallpapers"),
+                        Triple("en-GB", "United Kingdom", "UK daily wallpapers"),
+                        Triple("en-WW", "Global / Worldwide", "Worldwide international wallpapers")
+                    )
+
+                    markets.forEach { (code, name, desc) ->
+                        RegionOptionRow(
+                            title = name,
+                            description = desc,
+                            selected = selectedMarket == code,
+                            onClick = {
+                                selectedMarket = code
+                                viewModel.setMarketAndFetch(code)
+                                Toast.makeText(
+                                    context,
+                                    "Bing Region updated to $name ($code)",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        )
+                    }
+                }
+
+                HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
+
                 // Theme Selection
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
@@ -418,6 +465,48 @@ fun AppSettingsDialog(
         },
         shape = RoundedCornerShape(24.dp)
     )
+}
+
+@Composable
+fun RegionOptionRow(
+    title: String,
+    description: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+        border = if (selected) BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary) else null
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            RadioButton(
+                selected = selected,
+                onClick = onClick
+            )
+        }
+    }
 }
 
 @Composable
