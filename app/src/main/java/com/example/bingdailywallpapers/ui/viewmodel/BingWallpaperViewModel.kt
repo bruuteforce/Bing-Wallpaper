@@ -31,8 +31,10 @@ data class BingUiState(
 
 class BingWallpaperViewModel(
     application: Application,
-    private val repository: BingWallpaperRepository = BingWallpaperRepository()
+    private val repository: BingWallpaperRepository
 ) : AndroidViewModel(application) {
+
+    constructor(application: Application) : this(application, BingWallpaperRepository())
 
     private val initialFallback = getFallbackWallpapers()
 
