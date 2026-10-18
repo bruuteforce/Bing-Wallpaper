@@ -19,7 +19,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.CloudDownload
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material.icons.rounded.Wallpaper
+import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -173,17 +173,11 @@ fun WallpaperDetailScreen(
                                 .height(50.dp),
                             shape = RoundedCornerShape(16.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Wallpaper,
-                                contentDescription = null,
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
                             Text(
                                 text = "Set Wallpaper",
-                                style = MaterialTheme.typography.labelLarge,
+                                fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                maxLines = 1,
-                                softWrap = false
+                                maxLines = 1
                             )
                         }
 
@@ -203,10 +197,9 @@ fun WallpaperDetailScreen(
                             )
                             Text(
                                 text = "Download",
-                                style = MaterialTheme.typography.labelLarge,
+                                fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                maxLines = 1,
-                                softWrap = false
+                                maxLines = 1
                             )
                         }
                     }
