@@ -41,10 +41,10 @@ class DailyWallpaperWorker(
                 val images = result.getOrNull()
                 val latestImage = images?.firstOrNull()
 
-                if (latestImage != null && !latestImage.fullImageUrl.isNullOrEmpty()) {
+                if (latestImage != null && !latestImage.portraitUrl.isNullOrEmpty()) {
                     val wallpaperResult = WallpaperHelper.setWallpaperFromUrl(
                         applicationContext,
-                        latestImage.fullImageUrl,
+                        latestImage.portraitUrl,
                         WallpaperHelper.WallpaperTarget.BOTH
                     )
                     if (wallpaperResult.isSuccess) {
