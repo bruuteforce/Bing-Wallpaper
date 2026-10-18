@@ -1,7 +1,6 @@
 package com.example.bingdailywallpapers.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -124,9 +123,9 @@ fun FavoriteItemCard(
     onToggleFavorite: () -> Unit
 ) {
     Card(
+        onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
