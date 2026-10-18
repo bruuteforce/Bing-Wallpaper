@@ -13,6 +13,7 @@ object WallpaperPreferences {
     private const val KEY_DARK_MODE = "is_dark_mode"
     private const val KEY_THEME_MODE = "theme_mode" // "system", "dark", "light"
     private const val KEY_BING_MARKET = "bing_market" // "en-IN", "en-US", "en-GB", "en-WW"
+    private const val KEY_LAST_SYNC_TIMESTAMP = "last_sync_timestamp"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -29,6 +30,16 @@ object WallpaperPreferences {
     fun setAutoWallpaperEnabled(context: Context, enabled: Boolean) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit().putBoolean(KEY_AUTO_WALLPAPER, enabled).apply()
+    }
+
+    fun getLastSyncTimestamp(context: Context): Long {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return prefs.getLong(KEY_LAST_SYNC_TIMESTAMP, 0L)
+    }
+
+    fun setLastSyncTimestamp(context: Context, timestamp: Long) {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, timestamp).apply()
     }
 
     fun getThemeMode(context: Context): String {

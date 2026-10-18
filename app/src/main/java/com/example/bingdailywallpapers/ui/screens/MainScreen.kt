@@ -2,6 +2,8 @@ package com.example.bingdailywallpapers.ui.screens
 
 import android.widget.Toast
 import com.example.bingdailywallpapers.BuildConfig
+import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -324,6 +326,16 @@ fun AppSettingsDialog(
     var selectedMarket by remember {
         mutableStateOf(WallpaperPreferences.getBingMarket(context))
     }
+    var currentTime by remember {
+        mutableStateOf(System.currentTimeMillis())
+    }
+
+    LaunchedEffect(autoWallpaperEnabled) {
+        while (true) {
+            currentTime = System.currentTimeMillis()
+            delay(1000L)
+        }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -451,6 +463,9 @@ fun AppSettingsDialog(
                                 autoWallpaperEnabled = checked
                                 WallpaperPreferences.setAutoWallpaperEnabled(context, checked)
                                 if (checked) {
+                                    if (WallpaperPreferences.getLastSyncTimestamp(context) == 0L) {
+                                        WallpaperPreferences.setLastSyncTimestamp(context, System.currentTimeMillis())
+                                    }
                                     DailyWallpaperWorker.schedule(context)
                                     Toast.makeText(context, "Auto-sync enabled", Toast.LENGTH_SHORT).show()
                                 } else {
@@ -460,6 +475,43 @@ fun AppSettingsDialog(
                             }
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                    val statusText = if (autoWallpaperEnabled) {
+                        val lastSync = WallpaperPreferences.getLastSyncTimestamp(context)
+                        val interval = TimeUnit.HOURS.toMillis(24)
+                        val effectiveLastSync = if (lastSync == 0L) {
+                            val now = System.currentTimeMillis()
+                            WallpaperPreferences.setLastSyncTimestamp(context, now)
+                            now
+                        } else {
+                            lastSync
+                        }
+                        val nextSyncTime = effectiveLastSync + interval
+                        val remaining = nextSyncTime - currentTime
+                        if (remaining > 0) {
+                            val totalMinutes = TimeUnit.MILLISECONDS.toMinutes(remaining)
+                            val hours = totalMinutes / 60
+                            val minutes = totalMinutes % 60
+                            val timeStr = if (hours > 0) {
+                                "${hours}h ${minutes}m"
+                            } else {
+                                "$minutes minutes"
+                            }
+                            "Next sync in: $timeStr"
+                        } else {
+                            "Next sync in: Syncing soon..."
+                        }
+                    } else {
+                        "Auto-sync is disabled"
+                    }
+
+                    Text(
+                        text = statusText,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Medium,
+                        color = if (autoWallpaperEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
 
                 if (BuildConfig.DEBUG) {

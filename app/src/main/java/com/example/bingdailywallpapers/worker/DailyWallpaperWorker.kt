@@ -49,6 +49,7 @@ class DailyWallpaperWorker(
                         WallpaperHelper.WallpaperTarget.BOTH
                     )
                     if (wallpaperResult.isSuccess) {
+                        WallpaperPreferences.setLastSyncTimestamp(applicationContext, System.currentTimeMillis())
                         sendNotification(applicationContext, latestImage.title ?: "New Bing Wallpaper")
                         Result.success()
                     } else {
