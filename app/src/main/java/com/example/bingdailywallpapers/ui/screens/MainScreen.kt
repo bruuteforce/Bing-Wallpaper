@@ -61,6 +61,7 @@ import com.example.bingdailywallpapers.ui.viewmodel.BingWallpaperViewModel
 import com.example.bingdailywallpapers.util.WallpaperHelper
 import com.example.bingdailywallpapers.util.WallpaperPreferences
 import com.example.bingdailywallpapers.worker.DailyWallpaperWorker
+import androidx.work.WorkManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -469,13 +470,11 @@ fun AppSettingsDialog(
                                 autoWallpaperEnabled = checked
                                 WallpaperPreferences.setAutoWallpaperEnabled(context, checked)
                                 if (checked) {
-                                    if (WallpaperPreferences.getLastSyncTimestamp(context) == 0L) {
-                                        WallpaperPreferences.setLastSyncTimestamp(context, System.currentTimeMillis())
-                                    }
+                                    WallpaperPreferences.setLastSyncTimestamp(context, System.currentTimeMillis())
                                     DailyWallpaperWorker.schedule(context)
                                     Toast.makeText(context, "Auto-sync enabled", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    DailyWallpaperWorker.cancel(context)
+                                    WorkManager.getInstance(context).cancelUniqueWork("DailyWallpaperPeriodicWork")
                                     Toast.makeText(context, "Auto-sync disabled", Toast.LENGTH_SHORT).show()
                                 }
                             }
