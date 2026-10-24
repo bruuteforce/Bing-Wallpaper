@@ -1,0 +1,29 @@
+Categories:
+  - Multimedia
+  - Graphics
+License: Apache-2.0
+WebSite: https://github.com/bruuteforce/Bing-Wallpaper
+SourceCode: https://github.com/bruuteforce/Bing-Wallpaper
+IssueTracker: https://github.com/bruuteforce/Bing-Wallpaper/issues
+
+AutoName: Bing Daily Wallpapers
+Summary: Daily Bing Wallpaper application for Android
+Description: |-
+  Bing Daily Wallpapers is a modern Android application built with Jetpack Compose that automatically fetches and displays daily wallpaper images from Bing. Users can browse past wallpapers, set them as home or lock screen wallpapers, download them in high resolution, and enjoy a vibrant Material Design 3 user experience.
+
+  Features:
+  - Daily automatic Bing wallpaper fetching
+  - High-resolution image viewing and downloading
+  - Direct setting as home/lock screen wallpaper
+  - Material Design 3 with dynamic theming
+  - Clean and adaptive modern layout
+
+AntiFeatures: []
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: .
+    gradle:
+      - yes
